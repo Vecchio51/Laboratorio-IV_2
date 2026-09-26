@@ -17,19 +17,31 @@ try:
 except FileNotFoundError:
     print("Error...")
 
-#analis estadistico
+#Calcular estadísticas descriptivas con pandas y numpy
+print("--- Estadísticas Descriptivas ---")
+estadisticas = df.describe().loc[['mean', 'min', 'max', 'std']]
+print(estadisticas)
+print("\n")
 
-estadisticas = df.describe().loc[['mean', 'min', 'max', 'std']]}
-
-#realizamos una deteccion de fallos con arreglos
-
+#Definir criterio de alerta con arrays de numpy e indexado booleano
+#Extraemos las columnas a arrays de numpy
 voltaje = df['voltaje bateria V'].to_numpy()
 rssi = df['rssi dbm'].to_numpy()
 
+#Definimos las condiciones de alerta
 alerta_bateria = voltaje < 3.5
 alerta_senal = rssi < -85
+
+#Definimos al menos una alerta (operador OR bit a bit para arrays booleanos)
 alerta_general = alerta_bateria | alerta_senal
 
+print("--- Resumen de Alertas ---")
+print(f"Registros con batería baja (< 3.5V): {np.sum(alerta_bateria)}")
+print(f"Registros con señal débil (< -85 dBm): {np.sum(alerta_senal)}")
+print(f"Total de registros con al menos una alerta: {np.sum(alerta_general)}")
+print("\n")
+
+#Añadimos la columna de alerta general al DataFrame para usarla en el agrupamiento
 df['alerta_activa'] = alerta_general
 
 
