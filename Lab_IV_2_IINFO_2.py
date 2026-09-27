@@ -53,28 +53,28 @@ df['alerta_activa'] = alerta_general
 fig, ax1 = plt.subplots(figsize=(12, 6))
 
 #Eje Y izquierdo: Temperatura
-ax1.plot(df.index, df['temperatura C'], color='tab:red', label='Temperatura (°C)')
+ax1.plot(df.index, df['temperatura_C'], color='tab:red', label='Temperatura (°C)')
 ax1.set_ylabel('Temperatura (°C)', color='tab:red')
 
 #Eje Y derecho: Voltaje
 ax2 = ax1.twinx()
-ax2.plot(df.index, df['voltaje bateria V'], color='tab:blue', label='Voltaje batería (V)')
+ax2.plot(df.index, df['voltaje_bateria_V'], color='tab:blue', label='Voltaje batería (V)')
 ax2.set_ylabel('Voltaje (V)', color='tab:blue')
 
 #Dibujar las cruces en los momentos de alerta
 alertas = df[df['alerta_activa']]
-ax2.scatter(alertas.index, alertas['voltaje bateria V'], color='black', marker='X', s=50, label='Alerta Detectada')
+ax2.scatter(alertas.index, alertas['voltaje_bateria_V'], color='black', marker='X', s=50, label='Alerta Detectada')
 
 plt.title('Evolución temporal de telemetría')
 plt.show() #Instruccion para que el gráfico se renderice en pantalla
 
 #Resumen diario
 resumen_diario = df.resample('D').agg(
-    temperatura_promedio=('temperatura C', 'mean'),
-    temperatura_maxima=('temperatura C', 'max'),
-    temperatura_minima=('temperatura C', 'min'),
-    voltaje_promedio=('voltaje bateria V', 'mean'),
-    voltaje_minimo=('voltaje bateria V', 'min'),
+    temperatura_promedio=('temperatura_C', 'mean'),
+    temperatura_maxima=('temperatura_C', 'max'),
+    temperatura_minima=('temperatura_C', 'min'),
+    voltaje_promedio=('voltaje_bateria_V', 'mean'),
+    voltaje_minimo=('voltaje_bateria_V', 'min'),
     cantidad_alertas=('alerta_activa', 'sum')
 )
 
