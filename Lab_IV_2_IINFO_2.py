@@ -12,10 +12,15 @@ import matplotlib.pyplot as plt
 
 
 archivo_csv = 'telemetria_nodo_iot.csv'
+
 try:
-    df = pd.read_csv(archivo_csv, parse_dates=['timestamp'], index_col='timestamp')
+    df = pd.read_csv(
+        archivo_csv,
+        parse_dates=['timestamp'],
+        index_col='timestamp'
+    )
 except FileNotFoundError:
-    print("Error...")
+    print("Error: no se encontró el archivo CSV.")
 
 #Calcular estadísticas descriptivas con pandas y numpy
 print("--- Estadísticas Descriptivas ---")
@@ -25,8 +30,8 @@ print("\n")
 
 #Definir criterio de alerta con arrays de numpy e indexado booleano
 #Extraemos las columnas a arrays de numpy
-voltaje = df['voltaje bateria V'].to_numpy()
-rssi = df['rssi dbm'].to_numpy()
+voltaje = df['voltaje_bateria_V'].to_numpy()
+rssi = df['rssi_dbm'].to_numpy()
 
 #Definimos las condiciones de alerta
 alerta_bateria = voltaje < 3.5
