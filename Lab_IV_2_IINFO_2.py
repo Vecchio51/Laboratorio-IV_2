@@ -65,5 +65,17 @@ plt.plot(
 
 alertas = df[df['alerta_activa']]
 
+resumen_diario = df.resample('D').agg(
+    temperatura_promedio=('temperatura_C', 'mean'),
+    temperatura_maxima=('temperatura_C', 'max'),
+    temperatura_minima=('temperatura_C', 'min'),
+    voltaje_promedio=('voltaje_bateria_V', 'mean'),
+    voltaje_minimo=('voltaje_bateria_V', 'min'),
+    cantidad_alertas=('alerta_activa', 'sum')
+)
+
+print("--- Resumen diario ---")
+print(resumen_diario)
+
 
 
