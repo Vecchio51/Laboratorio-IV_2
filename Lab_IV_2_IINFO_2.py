@@ -52,19 +52,36 @@ df['alerta_activa'] = alerta_general
 #Gráfico con ejes independientes y marcadores de alerta
 fig, ax1 = plt.subplots(figsize=(12, 6))
 
-# Eje Y izquierdo: Temperatura
+#Eje Y izquierdo: Temperatura
 ax1.plot(df.index, df['temperatura C'], color='tab:red', label='Temperatura (°C)')
 ax1.set_ylabel('Temperatura (°C)', color='tab:red')
 
-# Eje Y derecho: Voltaje
+#Eje Y derecho: Voltaje
 ax2 = ax1.twinx()
 ax2.plot(df.index, df['voltaje bateria V'], color='tab:blue', label='Voltaje batería (V)')
 ax2.set_ylabel('Voltaje (V)', color='tab:blue')
 
-# Dibujar las cruces en los momentos de alerta
+#Dibujar las cruces en los momentos de alerta
 alertas = df[df['alerta_activa']]
 ax2.scatter(alertas.index, alertas['voltaje bateria V'], color='black', marker='X', s=50, label='Alerta Detectada')
 
 plt.title('Evolución temporal de telemetría')
 plt.show() #Instruccion para que el gráfico se renderice en pantalla
+
+#Resumen diario
+resumen_diario = df.resample('D').agg(
+    temperatura_promedio=('temperatura C', 'mean'),
+    temperatura_maxima=('temperatura C', 'max'),
+    temperatura_minima=('temperatura C', 'min'),
+    voltaje_promedio=('voltaje bateria V', 'mean'),
+    voltaje_minimo=('voltaje bateria V', 'min'),
+    cantidad_alertas=('alerta_activa', 'sum')
+)
+
+print("--- Resumen diario ---")
+print(resumen_diario)
+
+#Exportación a archivo Excel
+resumen_diario.to_excel('resumen_telemetria.xlsx', sheet_name='Resumen diario')
+print("\nArchivo Excel generado con éxito.")
 
