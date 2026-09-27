@@ -49,6 +49,21 @@ print("\n")
 #Añadimos la columna de alerta general al DataFrame para usarla en el agrupamiento
 df['alerta_activa'] = alerta_general
 
+plt.figure(figsize=(12, 6))
+
+plt.plot(
+    df.index,
+    df['temperatura_C'],
+    label='Temperatura (°C)'
+)
+
+plt.plot(
+    df.index,
+    df['voltaje_bateria_V'],
+    label='Voltaje batería (V)'
+)
+
+alertas = df[df['alerta_activa']]
 
 
 
